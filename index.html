@@ -16,7 +16,7 @@
         /* --- VARIÁVEIS DE DESIGN SYSTEM --- */
         :root {
             --primary-color: #8B4513; /* Marrom mais quente baseado na imagem */
-            --bg-color: #ffe4e1;      /* Rosa claro (Mistura de cores da imagem) */
+            --bg-color: #ffe4e1;      /* Rosa claro */
             --card-bg: #ffffff;
             --accent-color: #d2691e;  /* Chocolate */
             --gold: #c5a059;          
@@ -36,7 +36,7 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* --- HEADER --- */
+        /* --- HEADER E CARRINHO FLUTUANTE --- */
         header {
             background-color: var(--card-bg);
             padding: 1rem 5%;
@@ -59,6 +59,30 @@
         nav ul { display: flex; gap: 20px; }
         nav a { font-weight: 700; color: var(--primary-color); transition: var(--transition); }
         nav a:hover { color: var(--gold); }
+
+        /* NOVO: ÍCONE DO CARRINHO */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-left: 20px;
+            transition: var(--transition);
+        }
+        .cart-icon:hover { color: var(--accent-color); }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: none; /* Escondido por padrão */
+        }
 
         @media (max-width: 768px) {
             nav ul { display: none; } 
@@ -165,10 +189,33 @@
             padding: 5px 10px;
             border-radius: 8px;
             border: 1px solid #eec;
+            cursor: pointer; /* Adicionado cursor para indicar clique */
+            transition: background-color 0.2s;
         }
 
-        .qtd-label { display: block; font-size: 0.8rem; color: #777; }
-        .price-value { display: block; font-weight: 700; color: var(--accent-color); font-size: 1.1rem; }
+        .price-item:hover {
+             background-color: var(--primary-color);
+             color: white;
+        }
+        
+        /* NOVO: Estilo para o item de preço selecionado/focado */
+        .price-item:focus, .price-item.active {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--accent-color);
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+
+        .qtd-label { display: block; font-size: 0.8rem; }
+        .price-value { display: block; font-weight: 700; font-size: 1.1rem; }
+        .price-item:hover .price-value, .price-item:focus .price-value, .price-item.active .price-value {
+             color: white;
+        }
+        .price-item:hover .qtd-label, .price-item:focus .qtd-label, .price-item.active .qtd-label {
+             color: #fff8f8;
+        }
 
         .btn-buy {
             background-color: transparent;
@@ -206,243 +253,72 @@
             text-align: center;
             font-size: 30px;
             box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
-            z-index: 100;
+            z-index: 900; /* Abaixo do modal */
             display: flex; align-items: center; justify-content: center;
             transition: var(--transition);
         }
         .whatsapp-float:hover { transform: scale(1.1); background-color: #1ebd53; }
 
-    </style>
-</head>
-<body>
+        /* --- NOVO: CARRINHO MODAL --- */
 
-    <header>
-        <div class="logo">Brigadeiros da Suh</div>
-        <nav>
-            <ul>
-                <li><a href="#tradicionais">Tradicionais</a></li>
-                <li><a href="#gourmet">Gourmet</a></li>
-                <li><a href="#novos">Novos Sabores</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <h1>Faça já a sua encomenda!</h1>
-        <p>Docinhos tradicionais e gourmet feitos com amor para sua festa.</p>
-        <button class="btn-cta" onclick="fazerPedido('Orçamento Geral')">Solicitar Orçamento <i class="fas fa-whatsapp"></i></button>
-    </section>
-
-    <h2 id="tradicionais" class="category-title">Docinhos Tradicionais</h2>
-    <section>
-        <div class="catalog-grid">
-            <div class="card">
-                <div class="card-img-container"><img src="Gemini_Generated_Image_nv1x4anv1x4anv1x.png" alt="Brigadeiro"></div>
-                <h3>Brigadeiro</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 75</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 130</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Brigadeiro Tradicional')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="beijinhococo.png" alt="Beijinho"></div>
-                <h3>Beijinho de Coco</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 75</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 130</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Beijinho')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="napolitano.png" alt="Napolitano"></div>
-                <h3>Napolitano</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 85</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 150</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Napolitano')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="casadinho.png" alt="Casadinho"></div>
-                <h3>Casadinho</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 80</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 140</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Casadinho')">Encomendar</button>
-            </div>
-
-             <div class="card">
-                <div class="card-img-container"><img src="coloridos.png
-                                                    " alt="Coloridos"></div>
-                <h3>Coloridos</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 80</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 140</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Docinhos Coloridos')">Encomendar</button>
-            </div>
-        </div>
-    </section>
-
-    <h2 id="gourmet" class="category-title">Docinhos Gourmet</h2>
-    <section>
-        <div class="catalog-grid">
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1595254562906-64f8b4271456?q=80&w=400" alt="M&M"></div>
-                <h3>Brigadeiro M&M</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 190</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Brigadeiro M&M')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1579372785854-90f746d60848?q=80&w=400" alt="Chokito"></div>
-                <h3>Chokito</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 80</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 180</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Chokito')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1599940829427-4b42c8457525?q=80&w=400" alt="Nozes"></div>
-                <h3>Camafeu de Nozes</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 110</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 190</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Camafeu de Nozes')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1624373327791-934188076e2e?q=80&w=400" alt="Ninho Nutella"></div>
-                <h3>Ninho c/ Nutella</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 190</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Ninho com Nutella')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1630338998188-11260e884556?q=80&w=400" alt="Churros"></div>
-                <h3>Churros ou Pudim</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 190</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Churros/Pudim')">Encomendar</button>
-            </div>
-        </div>
-    </section>
-
-    <h2 id="novos" class="category-title">Novos Sabores</h2>
-    <section>
-        <div class="catalog-grid">
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1599639667919-e2e4944b6018?q=80&w=400" alt="Açaí"></div>
-                <h3>Açaí</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 180</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Açaí')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1588557133316-a1d1d95a6871?q=80&w=400" alt="Romeu e Julieta"></div>
-                <h3>Romeu e Julieta</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 180</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Romeu e Julieta')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1589942476532-f2cb2236fc01?q=80&w=400" alt="Maracujá"></div>
-                <h3>Maracujá</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 180</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Maracujá')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?q=80&w=400" alt="Morango"></div>
-                <h3>Morango</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 180</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Morango')">Encomendar</button>
-            </div>
-
-             <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400" alt="Café"></div>
-                <h3>Café</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 90</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 150</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Café')">Encomendar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-img-container"><img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=400" alt="Caipirinha"></div>
-                <h3>Caipirinha (Álcool)</h3>
-                <div class="price-box">
-                    <div class="price-item"><span class="qtd-label">50 un.</span><span class="price-value">R$ 100</span></div>
-                    <div class="price-item"><span class="qtd-label">100 un.</span><span class="price-value">R$ 180</span></div>
-                </div>
-                <button class="btn-buy" onclick="fazerPedido('Caipirinha')">Encomendar</button>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contato">
-        <div class="social-links">
-            <a href="https://instagram.com/suelenmoreiraluz" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fas fa-envelope"></i></a>
-        </div>
-        <p style="font-size: 1.2rem; margin-top: 10px;">Encomendas: <strong>(51) 99846-1755</strong></p>
-        <p>@suelenmoreiraluz</p>
-        <br>
-        <small>&copy; 2024 Brigadeiros Caseiros da Suh. Todos os direitos reservados.</small>
-    </footer>
-
-    <a href="#" onclick="fazerPedido('Geral')" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <script>
-        function fazerPedido(produto) {
-            // NÚMERO ATUALIZADO CONFORME IMAGEM
-            const telefoneWhatsApp = "5551998461755"; 
-            
-            let mensagem = "";
-
-            if (produto === 'Geral' || produto === 'Orçamento Geral') {
-                mensagem = "Olá, Suh! Vi seu site e gostaria de fazer um orçamento para uma festa.";
-            } else {
-                mensagem = `Olá! Gostaria de encomendar o *${produto}*. Poderia me confirmar a disponibilidade para minha data?`;
-            }
-
-            const url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
+        .modal {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
-    </script>
 
-</body>
-</html>
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto; /* Centraliza verticalmente */
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-family: var(--font-title);
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #cart-items { margin-bottom: 20px; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #eee;
+            padding: 10px 0;
+            font-size: 1rem;
+        }
